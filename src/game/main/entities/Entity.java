@@ -9,7 +9,7 @@ public abstract class Entity {
 	public Entity(int x, int y) {
 		this.x = x;
 		this.y = y;
-		speed = 50;
+		speed = 5;
 		sizeX = 50;
 		sizeY = 50;
 	}
