@@ -20,7 +20,7 @@ public class Snake extends Entity {
 		ticks = 0;
 
 	}
-	
+
 	protected void move() {
 		x += velX;
 		y += velY;
@@ -29,7 +29,7 @@ public class Snake extends Entity {
 	@Override
 	public void tick() {
 		
-		if(ticks < 15) {
+		if(ticks < 5) {
 			getInput();
 			ticks++;
 		}
@@ -65,6 +65,14 @@ public class Snake extends Entity {
 		g.setColor(Color.green);
 		g.fillRect(x, y, sizeX, sizeY);
 		
+	}
+	
+	public  int getX() {
+		return x;
+	}
+	
+	public  int getY() {
+		return y;
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import game.main.display.Display;
+import game.main.entities.Apple;
 import game.main.entities.Snake;
 import game.main.input.KeyManager;
 
@@ -34,16 +35,32 @@ public class Game implements Runnable {
 		display.getFrame().addKeyListener(keyManager);
 	}
 	
-	int snakeX = width / 2;
-	int snakeY = height / 2;
+	
+	int snakeX = 800 / 2 - 50;
+	int snakeY = 800 / 2 - 50;
+	
+	int appleX = 100;
+	int appleY = 100;
 	
 	Snake snake = new Snake(this, snakeX, snakeY);
+	Apple apple = new Apple(this, appleX, appleY);
 	
 	private void tick() {
 		keyManager.tick();
 		
+		int newSnakeX = snake.getX();
+		int newSnakeY = snake.getY();
+		int newAppleX = apple.getX();
+		int newAppleY = apple.getY();
+		
+		if(newSnakeX == newAppleX & newSnakeY == newAppleY) {
+			apple.isEaten();
+		}
+		
 		snake.tick();
-
+		
+		apple.tick();
+		
 	}
 	
 	private void render() {
@@ -56,8 +73,9 @@ public class Game implements Runnable {
 		g.clearRect(0, 0, width, height);
 		//Draw Here!
 		
+		apple.render(g);
 		snake.render(g);
-		
+
 		//End Drawing!
 		bs.show();
 		g.dispose();
@@ -72,7 +90,6 @@ public class Game implements Runnable {
 		long now;
 		long lastTime = System.nanoTime();
 		long timer = 0;
-		int ticks = 0;
 		
 		while(running) {
 			now = System.nanoTime();
@@ -83,13 +100,10 @@ public class Game implements Runnable {
 			if (delta >= 1) {
 				tick();
 				render();
-				ticks++;
 				delta--;
 			}
 			
 			if(timer >= 1000000000) {
-				System.out.println(ticks);
-				ticks = 0;
 				timer = 0;
 				
 			}
@@ -101,6 +115,7 @@ public class Game implements Runnable {
 		return keyManager;
 		
 	}
+	
 	
 	public synchronized void start() {
 		if(running)
