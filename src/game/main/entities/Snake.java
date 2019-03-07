@@ -7,31 +7,40 @@ import game.main.Game;
 
 public class Snake extends Entity {
 	
-	private Game game;
+	protected Game game;
 	
-	private int velX, velY;
+	private int velX, velY, speed, ticks;
 	
 	public Snake(Game game, int x, int y) {
 		super(x, y);
 		this.game = game;
 		velX = 0;
 		velY = 0;
+		speed = 50;
+		ticks = 0;
 
 	}
 	
-	private void move() {
+	protected void move() {
 		x += velX;
 		y += velY;
 	}
 	
 	@Override
 	public void tick() {
-		getInput();
-		move();
+		
+		if(ticks < 15) {
+			getInput();
+			ticks++;
+		}
+		else {
+			move();
+			ticks = 0;
+		}
 		
 	}
 	
-	private void getInput() {
+	protected void getInput() {
 		if(game.getKeyManager().up) {
 			velY = -speed;
 			velX = 0;
@@ -57,7 +66,5 @@ public class Snake extends Entity {
 		g.fillRect(x, y, sizeX, sizeY);
 		
 	}
-	
-	
 	
 }

@@ -4,12 +4,11 @@ import java.awt.Graphics;
 
 public abstract class Entity {
 	
-	protected int x, y, speed, sizeX, sizeY;
+	protected int x, y, sizeX, sizeY;
 	
 	public Entity(int x, int y) {
 		this.x = x;
 		this.y = y;
-		speed = 5;
 		sizeX = 50;
 		sizeY = 50;
 	}
