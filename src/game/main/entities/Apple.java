@@ -45,7 +45,7 @@ public class Apple extends Entity {
 	@Override
 	public void render(Graphics g) {
 		g.setColor(Color.red);
-		g.fillRect(x, y, sizeX, sizeY);
+		g.fillRect(x, y, size, size);
 		
 	}
 	

@@ -6,14 +6,12 @@ public abstract class Entity {
 	
 	protected  int x;
 	protected  int y;
-	protected int sizeX;
-	protected int sizeY;
+	protected int size;
 	
 	public Entity(int x, int y) {
 		this.x = x;
 		this.y = y;
-		sizeX = 50;
-		sizeY = 50;
+		size = 50;
 	}
 	
 	public abstract void tick();

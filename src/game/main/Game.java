@@ -35,7 +35,7 @@ public class Game implements Runnable {
 		display.getFrame().addKeyListener(keyManager);
 	}
 	
-	
+	//Create variables for game loop
 	int snakeX = 800 / 2 - 50;
 	int snakeY = 800 / 2 - 50;
 	
@@ -44,17 +44,14 @@ public class Game implements Runnable {
 	
 	Snake snake = new Snake(this, snakeX, snakeY);
 	Apple apple = new Apple(this, appleX, appleY);
+	//End here
 	
 	private void tick() {
 		keyManager.tick();
 		
-		int newSnakeX = snake.getX();
-		int newSnakeY = snake.getY();
-		int newAppleX = apple.getX();
-		int newAppleY = apple.getY();
-		
-		if(newSnakeX == newAppleX & newSnakeY == newAppleY) {
+		if(snake.getX() == apple.getX() & snake.getY() == apple.getY()) {
 			apple.isEaten();
+			snake.grow();
 		}
 		
 		snake.tick();
@@ -131,7 +128,6 @@ public class Game implements Runnable {
 		try {
 			thread.join();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
