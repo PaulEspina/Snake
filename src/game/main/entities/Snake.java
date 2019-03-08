@@ -11,6 +11,7 @@ public class Snake extends Entity {
 	protected Game game;
 	
 	protected int velX, velY, speed, ticks, length;
+	protected boolean isMovingX, isMovingY;
 	protected ArrayList<Integer> xCoords = new ArrayList<Integer>();
 	protected ArrayList<Integer> yCoords = new ArrayList<Integer>();
 	
@@ -24,7 +25,7 @@ public class Snake extends Entity {
 		length = 1;
 		xCoords.add(x);
 		yCoords.add(y);
-
+		
 	}
 
 	protected void move() {
@@ -41,8 +42,6 @@ public class Snake extends Entity {
 	@Override
 	public void tick() {
 		
-		
-		
 		if(length < xCoords.size()) {
 			xCoords.remove(0);
 			yCoords.remove(0);
@@ -58,25 +57,33 @@ public class Snake extends Entity {
 			move();
 			ticks = 0;
 		}
-		//
+		
 	}
 	
 	protected void getInput() {
-		if(game.getKeyManager().up) {
+		if(game.getKeyManager().up & !isMovingY) {
 			velY = -speed;
 			velX = 0;
+			isMovingY = true;
+			isMovingX = false;
 		}
-		if(game.getKeyManager().down) {
+		if(game.getKeyManager().down & !isMovingY) {
 			velY = +speed;
 			velX = 0;
+			isMovingY = true;
+			isMovingX = false;
 		}
-		if(game.getKeyManager().left) {
+		if(game.getKeyManager().left & !isMovingX) {
 			velX = -speed;
 			velY = 0;
+			isMovingX = true;
+			isMovingY = false;
 		}
-		if(game.getKeyManager().right) {
+		if(game.getKeyManager().right & !isMovingX) {
 			velX = +speed;
 			velY = 0;
+			isMovingX = true;
+			isMovingY = false;
 		}
 		
 	}
