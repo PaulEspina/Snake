@@ -35,15 +35,12 @@ public class Game implements Runnable {
 		display.getFrame().addKeyListener(keyManager);
 	}
 	
-	//Create variables for game loop
+	//Create variables for game loop here
 	int snakeX = 1024 / 2 - 64;
 	int snakeY = 1024 / 2 - 64;
 	
-	int appleX = 128;
-	int appleY = 128;
-	
 	Snake snake = new Snake(this, snakeX, snakeY);
-	Apple apple = new Apple(this, appleX, appleY);
+	Apple apple = new Apple(this);
 	//End here
 	
 	private void tick() {

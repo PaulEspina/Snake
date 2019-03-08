@@ -1,6 +1,5 @@
 package game.main.entities;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -8,11 +7,11 @@ import java.util.ArrayList;
 import game.main.Game;
 import game.main.gfx.ImageLoader;
 
-public class Snake extends Entity {
+public class Snake {
 	
 	protected Game game;
 	
-	protected int velX, velY, speed, ticks, length;
+	protected int velX, velY, speed, ticks, length, x, y, size;
 	protected boolean isMovingX, isMovingY, isMoving;
 	protected ArrayList<Integer> xCoords = new ArrayList<Integer>();
 	protected ArrayList<Integer> yCoords = new ArrayList<Integer>();
@@ -22,20 +21,22 @@ public class Snake extends Entity {
 	protected BufferedImage snakeTail = ImageLoader.loadImage("/textures/snakeTail.png");
 	
 	public Snake(Game game, int x, int y) {
-		super(x, y);
+		this.x = x;
+		this.y = y;
 		this.game = game;
 		velX = 0;
 		velY = 0;
 		speed = 64;
+		size = 64;
 		ticks = 0;
 		length = 3;
 		isMoving = false;
 		xCoords.add(x);
 		xCoords.add(x);
 		xCoords.add(x);
+		yCoords.add(y + size * 2);
+		yCoords.add(y + size);
 		yCoords.add(y);
-		yCoords.add(y - size);
-		yCoords.add(y - size * 2);
 		
 	}
 
@@ -50,7 +51,6 @@ public class Snake extends Entity {
 		length++;
 	}
 	
-	@Override
 	public void tick() {
 		
 		if(length < xCoords.size()) {
@@ -105,10 +105,7 @@ public class Snake extends Entity {
 		
 	}
 
-	@Override
 	public void render(Graphics g) {
-		g.setColor(Color.green);
-		//g.fillRect(x, y, size, size);
 		for(int i = 0; i < length; i++) {
 			if(i == xCoords.size() - 1) {
 				g.drawImage(snakeHead, xCoords.get(i), yCoords.get(i), null);

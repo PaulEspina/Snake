@@ -6,43 +6,37 @@ import java.util.Random;
 
 import game.main.Game;
 
-public class Apple extends Entity {
+public class Apple {
 	
 	protected Game game;
-
-	public Apple(Game game, int x, int y) {
-		super(x, y);
+	
+	protected int x, y, size;
+	
+	public Apple(Game game) {
 		this.game = game;
+		x = createRandomCoord();
+		y = createRandomCoord();
+		size = 64;
 		
 	}
 	
-	public int newX() {
+	private int createRandomCoord() {
 		Random rand = new Random();
-		int nx = rand.nextInt(1024) / 64;
-		int newX = Math.round(nx) * 64;
+		int n = rand.nextInt(1024) / 64;
+		int x = Math.round(n) * 64;
 		
-		return newX;
-	}
-	
-	public int newY() {
-		Random rand = new Random();
-		int ny = rand.nextInt(1024) / 64;
-		int newY = Math.round(ny) * 64;
-		
-		return newY;
+		return x;
 	}
 	
 	public void isEaten() {
-		x = newX();
-		y = newY();
+		x = createRandomCoord();
+		y = createRandomCoord();
 	}
 
-	@Override
 	public void tick() {
 
 	}
 
-	@Override
 	public void render(Graphics g) {
 		g.setColor(Color.red);
 		g.fillRect(x, y, size, size);
