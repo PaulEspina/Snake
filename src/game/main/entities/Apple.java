@@ -18,16 +18,16 @@ public class Apple extends Entity {
 	
 	public int newX() {
 		Random rand = new Random();
-		int nx = rand.nextInt(800) / 50;
-		int newX = Math.round(nx) * 50;
+		int nx = rand.nextInt(1024) / 64;
+		int newX = Math.round(nx) * 64;
 		
 		return newX;
 	}
 	
 	public int newY() {
 		Random rand = new Random();
-		int ny = rand.nextInt(800) / 50;
-		int newY = Math.round(ny) * 50;
+		int ny = rand.nextInt(1024) / 64;
+		int newY = Math.round(ny) * 64;
 		
 		return newY;
 	}

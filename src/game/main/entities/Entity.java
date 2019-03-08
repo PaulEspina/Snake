@@ -11,7 +11,7 @@ public abstract class Entity {
 	public Entity(int x, int y) {
 		this.x = x;
 		this.y = y;
-		size = 50;
+		size = 64;
 	}
 	
 	public abstract void tick();
