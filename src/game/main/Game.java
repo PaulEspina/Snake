@@ -21,6 +21,8 @@ public class Game implements Runnable {
 	private Graphics g;
 	
 	private KeyManager keyManager;
+	private Snake snake;
+	private Apple apple;
 	
 	public Game(String title, int width, int height) {
 		this.title = title;
@@ -28,20 +30,14 @@ public class Game implements Runnable {
 		this.height = height;
 		
 		keyManager = new KeyManager();
+		snake = new Snake(this);
+		apple = new Apple(this);
 	}
 	
 	private void init() {
 		display = new Display(title, width, height);
 		display.getFrame().addKeyListener(keyManager);
 	}
-	
-	//Create variables for game loop here
-	int snakeX = 512 / 2 - 32;
-	int snakeY = 512 / 2 - 32;
-	
-	Snake snake = new Snake(this, snakeX, snakeY);
-	Apple apple = new Apple(this);
-	//End here
 	
 	private void tick() {
 		keyManager.tick();
@@ -110,6 +106,18 @@ public class Game implements Runnable {
 		return keyManager;
 		
 	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public void setRunning(Boolean bool) {
+	       running = bool;
+	    }
 	
 	
 	public synchronized void start() {

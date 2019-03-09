@@ -11,28 +11,28 @@ import game.main.gfx.ImageLoader;
 
 public class Snake {
 	
-	protected Game game;
+	private Game game;
 	
-	protected int velX, velY, speed, ticks, length, x, y, size;
-	protected boolean isMovingX, isMovingY, isMoving;
-	protected String direction;
+	private int velX, velY, speed, ticks, length, x, y, size;
+	private boolean isMovingX, isMovingY, isMoving;
+	private String direction;
 	
-	protected ArrayList<Integer> xCoords = new ArrayList<Integer>();
-	protected ArrayList<Integer> yCoords = new ArrayList<Integer>();
+	private ArrayList<Integer> xCoords = new ArrayList<Integer>();
+	private ArrayList<Integer> yCoords = new ArrayList<Integer>();
 	
-	protected BufferedImage snakeHead = ImageLoader.loadImage("/textures/snakeHead32.png");
-	protected BufferedImage newSnakeHead = snakeHead;
+	private BufferedImage snakeHead = ImageLoader.loadImage("/textures/snakeHead32.png");
+	private BufferedImage newSnakeHead = snakeHead;
 	
-	protected BufferedImage snakeBody = ImageLoader.loadImage("/textures/snakeBody32.png");
+	private BufferedImage snakeBody = ImageLoader.loadImage("/textures/snakeBody32.png");
 
-	protected BufferedImage snakeTail = ImageLoader.loadImage("/textures/snakeTail32.png");
-	protected BufferedImage newSnakeTail = snakeTail;
+	private BufferedImage snakeTail = ImageLoader.loadImage("/textures/snakeTail32.png");
+	private BufferedImage newSnakeTail = snakeTail;
 
 	
-	public Snake(Game game, int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Snake(Game game) {
 		this.game = game;
+		x = 512 / 2;
+		y = 512 / 2;
 		velX = 0;
 		velY = 0;
 		speed = 32;
@@ -48,8 +48,30 @@ public class Snake {
 		yCoords.add(y);
 		
 	}
+	
+	private void gameOverCheck() {
+		if(collisionCheck()) {
+			game.setRunning(false);
+		}
+	}
+	
+	private boolean collisionCheck() {
+		for(int i = 0; i < length - 1; i++)
+			if(x == xCoords.get(i)) {
+				if(y == yCoords.get(i) ) {
+					return true;
+				}
+			}
+			if(x >= game.getWidth() | x < 0) {
+				return true;
+			}
+			if(y >= game.getHeight() | y < 0) {
+				return true;
+			}
+			return false;
+	}
 
-	protected void move() {	
+	private void move() {	
 		x += velX;
 		y += velY;
 		xCoords.add(x);
@@ -60,7 +82,7 @@ public class Snake {
 		}
 	}
 	
-	protected void rotations() {
+	private void rotations() {
 		//Head
 		if(direction == "up") {
 			newSnakeHead = rotateTexture(0, snakeHead);
@@ -110,12 +132,13 @@ public class Snake {
 			if(isMoving) {
 				move();
 				rotations();
+				gameOverCheck();
 			}
 			ticks = 0;
 		}	
 	}
 	
-	protected void getInput() {
+	private void getInput() {
 		if(game.getKeyManager().up & !isMovingY) {
 			velY = -speed;
 			velX = 0;
