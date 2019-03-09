@@ -40,11 +40,18 @@ public class Snake {
 		
 	}
 
-	protected void move() {
+	protected void move() {	
 		x += velX;
 		y += velY;
 		xCoords.add(x);
 		yCoords.add(y);
+		if(length < xCoords.size()) {
+			xCoords.remove(0);
+			yCoords.remove(0);
+		}
+//		xCoords.remove(0);
+//		yCoords.remove(0);
+		
 	}
 	
 	public void grow() {
@@ -52,12 +59,6 @@ public class Snake {
 	}
 	
 	public void tick() {
-		
-		if(length < xCoords.size()) {
-			xCoords.remove(0);
-			yCoords.remove(0);
-		}
-		
 		//This makes key presses responsive and makes the snake move
 		//every 5 frames.
 		if(ticks < 5) {
@@ -70,6 +71,7 @@ public class Snake {
 			}
 			ticks = 0;
 		}
+		
 		
 	}
 	
@@ -106,16 +108,16 @@ public class Snake {
 	}
 
 	public void render(Graphics g) {
-		for(int i = 0; i < length; i++) {
+		for(int i = 0; i < xCoords.size(); i++) {
 			if(i == xCoords.size() - 1) {
 				g.drawImage(snakeHead, xCoords.get(i), yCoords.get(i), null);
 			} else if(i == 0) {
 				g.drawImage(snakeTail, xCoords.get(i), yCoords.get(i), null);
-			}else {
+			} else {
 				g.drawImage(snakeBody, xCoords.get(i), yCoords.get(i), null);
 			}
-			
 		}
+		
 	}
 	
 	public  int getX() {

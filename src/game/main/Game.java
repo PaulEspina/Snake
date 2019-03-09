@@ -49,6 +49,7 @@ public class Game implements Runnable {
 		if(snake.getX() == apple.getX() & snake.getY() == apple.getY()) {
 			apple.isEaten();
 			snake.grow();
+			
 		}
 		
 		snake.tick();
