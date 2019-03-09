@@ -1,6 +1,8 @@
 package game.main.entities;
 
 import java.awt.Graphics;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -13,12 +15,19 @@ public class Snake {
 	
 	protected int velX, velY, speed, ticks, length, x, y, size;
 	protected boolean isMovingX, isMovingY, isMoving;
+	protected String direction;
+	
 	protected ArrayList<Integer> xCoords = new ArrayList<Integer>();
 	protected ArrayList<Integer> yCoords = new ArrayList<Integer>();
 	
-	protected BufferedImage snakeHead = ImageLoader.loadImage("/textures/snakeHead.png");
-	protected BufferedImage snakeBody = ImageLoader.loadImage("/textures/snakeBody.png");
-	protected BufferedImage snakeTail = ImageLoader.loadImage("/textures/snakeTail.png");
+	protected BufferedImage snakeHead = ImageLoader.loadImage("/textures/snakeHead32.png");
+	protected BufferedImage newSnakeHead = snakeHead;
+	
+	protected BufferedImage snakeBody = ImageLoader.loadImage("/textures/snakeBody32.png");
+
+	protected BufferedImage snakeTail = ImageLoader.loadImage("/textures/snakeTail32.png");
+	protected BufferedImage newSnakeTail = snakeTail;
+
 	
 	public Snake(Game game, int x, int y) {
 		this.x = x;
@@ -26,8 +35,8 @@ public class Snake {
 		this.game = game;
 		velX = 0;
 		velY = 0;
-		speed = 64;
-		size = 64;
+		speed = 32;
+		size = 32;
 		ticks = 0;
 		length = 3;
 		isMoving = false;
@@ -49,18 +58,50 @@ public class Snake {
 			xCoords.remove(0);
 			yCoords.remove(0);
 		}
-//		xCoords.remove(0);
-//		yCoords.remove(0);
+	}
+	
+	protected void rotations() {
+		//Head
+		if(direction == "up") {
+			newSnakeHead = rotateTexture(0, snakeHead);
+		}
+		if(direction == "down") {
+			newSnakeHead = rotateTexture(180, snakeHead);
+		}
+		if(direction == "left") {
+			newSnakeHead = rotateTexture(-90, snakeHead);
+		}
+		if(direction == "right") {
+			newSnakeHead = rotateTexture(90, snakeHead);
+		}
 		
+		//Tail
+		if(xCoords.get(1) > xCoords.get(0)) {
+			newSnakeTail = rotateTexture(90, snakeTail);
+		}
+		if(xCoords.get(1) < xCoords.get(0)) {
+			newSnakeTail = rotateTexture(-90, snakeTail);
+		}
+		if(yCoords.get(1) > yCoords.get(0)) {
+			newSnakeTail = rotateTexture(180, snakeTail);
+		}
+		if(yCoords.get(1) < yCoords.get(0)) {
+			newSnakeTail = rotateTexture(0, snakeTail);
+		}
 	}
 	
 	public void grow() {
 		length++;
 	}
 	
+	private BufferedImage rotateTexture(int angle, BufferedImage image) {
+		AffineTransform transform = new AffineTransform();
+		transform.rotate(Math.toRadians(angle), image.getWidth()/2, image.getHeight()/2);
+		AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
+		return op.filter(image, null);
+	}
+	
 	public void tick() {
-		//This makes key presses responsive and makes the snake move
-		//every 5 frames.
 		if(ticks < 5) {
 			getInput();
 			ticks++;
@@ -68,11 +109,10 @@ public class Snake {
 		else {
 			if(isMoving) {
 				move();
+				rotations();
 			}
 			ticks = 0;
-		}
-		
-		
+		}	
 	}
 	
 	protected void getInput() {
@@ -82,6 +122,8 @@ public class Snake {
 			isMovingY = true;
 			isMovingX = false;
 			isMoving = true;
+			direction = "up";
+			
 		}
 		if(game.getKeyManager().down & !isMovingY) {
 			velY = +speed;
@@ -89,6 +131,8 @@ public class Snake {
 			isMovingY = true;
 			isMovingX = false;
 			isMoving = true;
+			direction = "down";
+			
 		}
 		if(game.getKeyManager().left & !isMovingX) {
 			velX = -speed;
@@ -96,6 +140,7 @@ public class Snake {
 			isMovingX = true;
 			isMovingY = false;
 			isMoving = true;
+			direction = "left";
 		}
 		if(game.getKeyManager().right & !isMovingX) {
 			velX = +speed;
@@ -103,21 +148,18 @@ public class Snake {
 			isMovingX = true;
 			isMovingY = false;
 			isMoving = true;
+			direction = "right";
 		}
 		
 	}
 
 	public void render(Graphics g) {
-		for(int i = 0; i < xCoords.size(); i++) {
-			if(i == xCoords.size() - 1) {
-				g.drawImage(snakeHead, xCoords.get(i), yCoords.get(i), null);
-			} else if(i == 0) {
-				g.drawImage(snakeTail, xCoords.get(i), yCoords.get(i), null);
-			} else {
-				g.drawImage(snakeBody, xCoords.get(i), yCoords.get(i), null);
-			}
+		g.drawImage(newSnakeHead, xCoords.get(xCoords.size() - 1), yCoords.get(xCoords.size() - 1), null);
+		for(int i = 1; i < (xCoords.size() - 1); i++) {
+			g.drawImage(snakeBody, xCoords.get(i), yCoords.get(i), null);
 		}
-		
+		g.drawImage(newSnakeTail, xCoords.get(0), yCoords.get(0), null);
+
 	}
 	
 	public  int getX() {

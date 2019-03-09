@@ -36,8 +36,8 @@ public class Game implements Runnable {
 	}
 	
 	//Create variables for game loop here
-	int snakeX = 1024 / 2 - 64;
-	int snakeY = 1024 / 2 - 64;
+	int snakeX = 512 / 2 - 32;
+	int snakeY = 512 / 2 - 32;
 	
 	Snake snake = new Snake(this, snakeX, snakeY);
 	Apple apple = new Apple(this);
