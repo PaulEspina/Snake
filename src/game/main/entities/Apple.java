@@ -4,20 +4,16 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-import game.main.Game;
 import game.main.gfx.ImageLoader;
 
 public class Apple {
 	
-	protected Game game;
-	
 	protected int x, y, size;
 	protected BufferedImage apple = ImageLoader.loadImage("/textures/apple32.png");
 	
-	public Apple(Game game) {
-		this.game = game;
-		x = createRandomCoord();
-		y = createRandomCoord();
+	public Apple() {
+		x = 512 / 2;
+		y = 512 / 4;
 		size = 32;
 		
 	}

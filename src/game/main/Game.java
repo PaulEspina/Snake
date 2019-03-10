@@ -5,6 +5,7 @@ import java.awt.image.BufferStrategy;
 
 import game.main.display.Display;
 import game.main.input.KeyManager;
+import game.main.input.MouseManager;
 import game.main.states.GameState;
 import game.main.states.MenuState;
 import game.main.states.State;
@@ -22,28 +23,35 @@ public class Game implements Runnable {
 	private Graphics g;
 	
 	private KeyManager keyManager;
-	
+	private MouseManager mouseManager;
 	
 	//states
-	private State gameState;
-	private State menuState;
+	public State gameState;
+	public State menuState;
 	
+	
+
 	public Game(String title, int width, int height) {
 		this.title = title;
 		this.width = width;
 		this.height = height;
 		
 		keyManager = new KeyManager();
+		mouseManager = new MouseManager();
 		
 	}
 	
 	private void init() {
 		display = new Display(title, width, height);
 		display.getFrame().addKeyListener(keyManager);
+		display.getFrame().addMouseListener(mouseManager);
+		display.getFrame().addMouseMotionListener(mouseManager);
+		display.getCanvas().addMouseListener(mouseManager);
+		display.getCanvas().addMouseMotionListener(mouseManager);
 		
 		gameState = new GameState(this);
-		menuState = new MenuState();
-		State.setState(gameState);
+		menuState = new MenuState(this);
+		State.setState(menuState);
 	}
 	
 	private void tick() {
@@ -51,7 +59,7 @@ public class Game implements Runnable {
 			State.getState().tick();
 		
 		keyManager.tick();
-		
+		mouseManager.tick();
 	}
 	
 	private void render() {
@@ -105,6 +113,10 @@ public class Game implements Runnable {
 	public KeyManager getKeyManager() {
 		return keyManager;
 		
+	}
+	
+	public MouseManager getMouseManager() {
+		return mouseManager;
 	}
 	
 	public int getWidth() {

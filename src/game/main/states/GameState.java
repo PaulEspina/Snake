@@ -16,7 +16,7 @@ public class GameState extends State {
 	
 	public GameState(Game game) {
 		snake = new Snake(game);
-		apple = new Apple(game);
+		apple = new Apple();
 		
 	}
 	
@@ -30,7 +30,6 @@ public class GameState extends State {
 		for(int i = 0; i < xCoords.size() - 1; i++) {
 			if(xCoords.get(i) == apple.getX() & yCoords.get(i) == apple.getY()) {
 				apple.isEaten();
-				System.out.println("ooof");
 				
 			}
 		}
