@@ -14,7 +14,7 @@ public class Snake {
 	private Game game;
 	
 	private int velX, velY, speed, ticks, length, x, y, size;
-	private boolean isMovingX, isMovingY, isMoving;
+	private boolean isMovingX, isMovingY, isMoving, xLock, yLock, xLock1, yLock1;
 	private String direction;
 	
 	private ArrayList<Integer> xCoords = new ArrayList<Integer>();
@@ -27,7 +27,6 @@ public class Snake {
 
 	private BufferedImage snakeTail = ImageLoader.loadImage("/textures/snakeTail32.png");
 	private BufferedImage newSnakeTail = snakeTail;
-
 	
 	public Snake(Game game) {
 		this.game = game;
@@ -46,6 +45,8 @@ public class Snake {
 		yCoords.add(y + size * 2);
 		yCoords.add(y + size);
 		yCoords.add(y);
+		xLock1 = false;
+		yLock1 = false;
 		
 	}
 	
@@ -80,6 +81,7 @@ public class Snake {
 			xCoords.remove(0);
 			yCoords.remove(0);
 		}
+		
 	}
 	
 	private void rotations() {
@@ -130,49 +132,70 @@ public class Snake {
 		}
 		else {
 			if(isMoving) {
+				
 				move();
 				rotations();
 				gameOverCheck();
+				
+				yLock = false;
+				xLock = false;
+				
 			}
 			ticks = 0;
 		}	
 	}
 	
 	private void getInput() {
-		if(game.getKeyManager().up & !isMovingY) {
-			velY = -speed;
-			velX = 0;
-			isMovingY = true;
-			isMovingX = false;
-			isMoving = true;
-			direction = "up";
-			
+		if(!yLock & !yLock1) {
+			if(game.getKeyManager().up & !isMovingY) {
+				velY = -speed;
+				velX = 0;
+				isMovingY = true;
+				isMovingX = false;
+				isMoving = true;
+				direction = "up";
+				xLock = true;
+				yLock1 = true;
+				xLock1 = false;
+			}
+			if(game.getKeyManager().down & !isMovingY) {
+				velY = +speed;
+				velX = 0;
+				isMovingY = true;
+				isMovingX = false;
+				isMoving = true;
+				direction = "down";
+				xLock = true;
+				yLock1 = true;
+				xLock1 = false;
+			}
 		}
-		if(game.getKeyManager().down & !isMovingY) {
-			velY = +speed;
-			velX = 0;
-			isMovingY = true;
-			isMovingX = false;
-			isMoving = true;
-			direction = "down";
-			
+		
+		if(!xLock & !xLock1) {
+			if(game.getKeyManager().left & !isMovingX & !xLock & !xLock1) {
+				velX = -speed;
+				velY = 0;
+				isMovingX = true;
+				isMovingY = false;
+				isMoving = true;
+				direction = "left";
+				yLock = true;
+				xLock1 = true;
+				yLock1 = false;
+			}
+			if(game.getKeyManager().right & !isMovingX & !xLock & !xLock1) {
+				velX = +speed;
+				velY = 0;
+				isMovingX = true;
+				isMovingY = false;
+				isMoving = true;
+				direction = "right";
+				yLock = true;
+				xLock1 = true;
+				yLock1 = false;
+			}
 		}
-		if(game.getKeyManager().left & !isMovingX) {
-			velX = -speed;
-			velY = 0;
-			isMovingX = true;
-			isMovingY = false;
-			isMoving = true;
-			direction = "left";
-		}
-		if(game.getKeyManager().right & !isMovingX) {
-			velX = +speed;
-			velY = 0;
-			isMovingX = true;
-			isMovingY = false;
-			isMoving = true;
-			direction = "right";
-		}
+		
 		
 	}
 
@@ -191,6 +214,13 @@ public class Snake {
 	
 	public  int getY() {
 		return y;
+	}
+	
+	public ArrayList<Integer> getXCoords() {
+		return xCoords;
+	}
+	public ArrayList<Integer> getYCoords() {
+		return yCoords;
 	}
 	
 }

@@ -4,9 +4,10 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import game.main.display.Display;
-import game.main.entities.Apple;
-import game.main.entities.Snake;
 import game.main.input.KeyManager;
+import game.main.states.GameState;
+import game.main.states.MenuState;
+import game.main.states.State;
 
 public class Game implements Runnable {
 	
@@ -21,8 +22,11 @@ public class Game implements Runnable {
 	private Graphics g;
 	
 	private KeyManager keyManager;
-	private Snake snake;
-	private Apple apple;
+	
+	
+	//states
+	private State gameState;
+	private State menuState;
 	
 	public Game(String title, int width, int height) {
 		this.title = title;
@@ -30,27 +34,23 @@ public class Game implements Runnable {
 		this.height = height;
 		
 		keyManager = new KeyManager();
-		snake = new Snake(this);
-		apple = new Apple(this);
+		
 	}
 	
 	private void init() {
 		display = new Display(title, width, height);
 		display.getFrame().addKeyListener(keyManager);
+		
+		gameState = new GameState(this);
+		menuState = new MenuState();
+		State.setState(gameState);
 	}
 	
 	private void tick() {
+		if(State.getState() != null)
+			State.getState().tick();
+		
 		keyManager.tick();
-		
-		if(snake.getX() == apple.getX() & snake.getY() == apple.getY()) {
-			apple.isEaten();
-			snake.grow();
-			
-		}
-		
-		snake.tick();
-		
-		apple.tick();
 		
 	}
 	
@@ -64,8 +64,8 @@ public class Game implements Runnable {
 		g.clearRect(0, 0, width, height);
 		//Draw Here!
 		
-		apple.render(g);
-		snake.render(g);
+		if(State.getState() != null)
+			State.getState().render(g);
 
 		//End Drawing!
 		bs.show();
