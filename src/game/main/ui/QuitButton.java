@@ -1,6 +1,7 @@
 package game.main.ui;
 
 import java.awt.Graphics;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
 import game.main.Game;
@@ -23,7 +24,10 @@ public class QuitButton extends Buttons {
 			for(int j = 0; j < yBox.size(); j++) {
 				if(game.getMouseManager().getMouseX() == xBox.get(i) & game.getMouseManager().getMouseY() == yBox.get(j)) {
 					onMouse = true;
-					
+					if(game.getMouseManager().isLeftPressed()) {
+						game.setRunning(false);
+						game.getDisplay().getFrame().dispatchEvent(new WindowEvent(game.getDisplay().getFrame(), WindowEvent.WINDOW_CLOSING));
+					}
 				}
 			}
 		}

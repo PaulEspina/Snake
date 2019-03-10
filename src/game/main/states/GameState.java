@@ -1,5 +1,6 @@
 package game.main.states;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -14,7 +15,10 @@ public class GameState extends State {
 	
 	private ArrayList<Integer> xCoords, yCoords;
 	
+	private Game game;
+	
 	public GameState(Game game) {
+		this.game = game;
 		snake = new Snake(game);
 		apple = new Apple();
 		
@@ -50,6 +54,9 @@ public class GameState extends State {
 
 	@Override
 	public void render(Graphics g) {
+		Color myGreen = new Color(100,130,100);
+		g.setColor(myGreen);
+		g.fillRect(0, 0, game.width, game.height);
 		
 		apple.render(g);
 		snake.render(g);

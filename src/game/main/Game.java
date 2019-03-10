@@ -127,6 +127,10 @@ public class Game implements Runnable {
 		return height;
 	}
 	
+	public Display getDisplay() {
+		return display;
+	}
+	
 	public void setRunning(Boolean bool) {
 	       running = bool;
 	    }

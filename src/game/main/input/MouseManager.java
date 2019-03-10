@@ -1,6 +1,5 @@
 package game.main.input;
 
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -15,7 +14,7 @@ public class MouseManager implements MouseListener, MouseMotionListener {
 	}
 	
 	public void tick() {
-		leftPressed = false;
+		leftPressed = false;	
 	}
 	
 	//Getters
