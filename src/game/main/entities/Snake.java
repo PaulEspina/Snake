@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import game.main.Game;
 import game.main.gfx.ImageLoader;
+import game.main.states.State;
 
 public class Snake {
 	
@@ -52,7 +53,7 @@ public class Snake {
 	
 	private void gameOverCheck() {
 		if(collisionCheck()) {
-			game.setRunning(false);
+			State.setState(game.gameOver);
 		}
 	}
 	

@@ -6,6 +6,7 @@ import java.awt.image.BufferStrategy;
 import game.main.display.Display;
 import game.main.input.KeyManager;
 import game.main.input.MouseManager;
+import game.main.states.GameOver;
 import game.main.states.GameState;
 import game.main.states.MenuState;
 import game.main.states.State;
@@ -28,6 +29,7 @@ public class Game implements Runnable {
 	//states
 	public State gameState;
 	public State menuState;
+	public State gameOver;
 	
 	
 
@@ -51,6 +53,7 @@ public class Game implements Runnable {
 		
 		gameState = new GameState(this);
 		menuState = new MenuState(this);
+		gameOver = new GameOver(this);
 		State.setState(menuState);
 	}
 	
